@@ -1,6 +1,9 @@
 services:
   dork-generator:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dork-search-generator:latest
     container_name: dork-search-generator
     restart: unless-stopped
     ports:
@@ -17,7 +20,7 @@ services:
       - PHP_MAX_EXECUTION_TIME=300
       - NGINX_WORKER_CONNECTIONS=1024
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health.php"]
+      test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
