@@ -1,0 +1,37 @@
+services:
+  dork-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dork-search-generator-dev
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      # Persistent data only - source code is baked into image
+      - dork-logs-dev:/var/www/html/logs
+      - dork-cache-dev:/var/www/html/cache
+      - dork-sessions-dev:/var/www/html/sessions
+    environment:
+      - PHP_MEMORY_LIMIT=512M
+      - PHP_MAX_EXECUTION_TIME=300
+      - NGINX_WORKER_CONNECTIONS=1024
+      - APP_ENV=development
+      - APP_DEBUG=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - dork-network-dev
+
+networks:
+  dork-network-dev:
+    driver: bridge
+
+volumes:
+  dork-logs-dev:
+  dork-cache-dev:
+  dork-sessions-dev:

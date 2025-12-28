@@ -22,6 +22,9 @@ function initializeApp() {
     
     // Check if we should scroll to results
     checkScrollToResults();
+    
+    // Analyze dork if present
+    analyzeDork();
 }
 
 // Copy to clipboard functionality
@@ -912,3 +915,73 @@ function downloadFile(content, filename, mimeType) {
 document.addEventListener('DOMContentLoaded', function() {
     initializeEnhancedFeatures();
 });
+
+// Dork Analysis Function
+function analyzeDork() {
+    const dorkElement = document.getElementById('generated-dork');
+    if (!dorkElement) return;
+    
+    const dork = dorkElement.textContent;
+    
+    // Count operators
+    const operators = ['site:', 'inurl:', 'intitle:', 'intext:', 'filetype:', 'ext:', 'port:', 'after:', 'before:', '-site:'];
+    let operatorCount = 0;
+    operators.forEach(op => {
+        if (dork.includes(op)) operatorCount++;
+    });
+    
+    // Calculate complexity
+    const wordCount = dork.split(/\s+/).length;
+    let complexity = 'Low';
+    let complexityClass = 'risk-low';
+    
+    if (wordCount > 10 || operatorCount > 5) {
+        complexity = 'High';
+        complexityClass = 'risk-high';
+    } else if (wordCount > 5 || operatorCount > 2) {
+        complexity = 'Medium';
+        complexityClass = 'risk-medium';
+    }
+    
+    // Determine risk level
+    const highRiskKeywords = ['password', 'admin', 'login', 'config', 'database', 'sql', 'backup', '.env'];
+    const mediumRiskKeywords = ['index of', 'directory', 'upload', 'file'];
+    
+    let riskLevel = 'Low';
+    let riskClass = 'risk-low';
+    
+    highRiskKeywords.forEach(keyword => {
+        if (dork.toLowerCase().includes(keyword)) {
+            riskLevel = 'High';
+            riskClass = 'risk-high';
+        }
+    });
+    
+    if (riskLevel === 'Low') {
+        mediumRiskKeywords.forEach(keyword => {
+            if (dork.toLowerCase().includes(keyword)) {
+                riskLevel = 'Medium';
+                riskClass = 'risk-medium';
+            }
+        });
+    }
+    
+    // Update UI
+    const complexityEl = document.getElementById('complexity-score');
+    const operatorCountEl = document.getElementById('operator-count');
+    const riskLevelEl = document.getElementById('risk-level');
+    
+    if (complexityEl) {
+        complexityEl.textContent = complexity;
+        complexityEl.className = 'value ' + complexityClass;
+    }
+    
+    if (operatorCountEl) {
+        operatorCountEl.textContent = operatorCount;
+    }
+    
+    if (riskLevelEl) {
+        riskLevelEl.textContent = riskLevel;
+        riskLevelEl.className = 'value ' + riskClass;
+    }
+}

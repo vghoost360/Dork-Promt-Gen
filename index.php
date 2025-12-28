@@ -449,6 +449,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
+                    <div class="adult-search">
+                        <h4><i class="fas fa-user-secret"></i> Adult Content Search (18+)</h4>
+                        <div class="adult-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Warning:</strong> These search engines are for adult content research only. 
+                            Must be 18+ and used for legitimate security research purposes.
+                        </div>
+                        <div class="search-buttons adult">
+                            <a href="https://www.bing.com/search?q=<?= urlencode($generated_dork . ' site:pornhub.com OR site:xvideos.com OR site:xnxx.com') ?>" 
+                               target="_blank" class="search-btn adult-btn">
+                                <i class="fas fa-video"></i> Video Sites
+                            </a>
+                            <a href="https://www.bing.com/search?q=<?= urlencode($generated_dork . ' site:onlyfans.com OR site:fansly.com') ?>" 
+                               target="_blank" class="search-btn adult-btn">
+                                <i class="fas fa-users"></i> Premium Sites
+                            </a>
+                            <a href="https://www.bing.com/search?q=<?= urlencode($generated_dork . ' site:reddit.com/r/nsfw OR site:reddit.com/r/gonewild') ?>" 
+                               target="_blank" class="search-btn adult-btn">
+                                <i class="fab fa-reddit"></i> Reddit NSFW
+                            </a>
+                            <a href="https://www.bing.com/search?q=<?= urlencode($generated_dork . ' site:tumblr.com adult') ?>" 
+                               target="_blank" class="search-btn adult-btn">
+                                <i class="fab fa-tumblr"></i> Tumblr Adult
+                            </a>
+                            <a href="https://www.google.com/search?q=<?= urlencode($generated_dork . ' filetype:jpg OR filetype:png OR filetype:gif adult OR nsfw') ?>" 
+                               target="_blank" class="search-btn adult-btn">
+                                <i class="fas fa-image"></i> Image Search
+                            </a>
+                            <a href="https://www.bing.com/search?q=<?= urlencode($generated_dork . ' site:twitter.com OR site:x.com nsfw') ?>" 
+                               target="_blank" class="search-btn adult-btn">
+                                <i class="fab fa-twitter"></i> Twitter/X NSFW
+                            </a>
+                        </div>
+                    </div>
+                    
                     <div class="export-options">
                         <h4><i class="fas fa-download"></i> Export Options</h4>
                         <div class="export-buttons">
