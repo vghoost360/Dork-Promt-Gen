@@ -1,8 +1,10 @@
 services:
   dork-generator:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: vghoost360/dork-generator:latest
+    # To build locally instead, uncomment below and comment out image:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: dork-search-generator
     restart: unless-stopped
     ports:
