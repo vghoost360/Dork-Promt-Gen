@@ -376,6 +376,14 @@ function initializeModeSelection() {
     const modeCards = document.querySelectorAll('.mode-card');
     const modeInput = document.getElementById('selected_mode');
     
+    // Set initial active state
+    modeCards.forEach(card => {
+        const radio = card.querySelector('input[type="radio"]');
+        if (radio && radio.checked) {
+            card.classList.add('active');
+        }
+    });
+    
     modeCards.forEach(card => {
         card.addEventListener('click', function() {
             // Remove active class from all cards
@@ -384,15 +392,26 @@ function initializeModeSelection() {
             // Add active class to clicked card
             this.classList.add('active');
             
+            // Check the radio button
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+            }
+            
             // Update hidden input
             const mode = this.dataset.mode;
-            modeInput.value = mode;
+            if (modeInput) {
+                modeInput.value = mode;
+            }
             
             // Update form based on mode
             updateFormBasedOnMode(mode);
             
             // Show notification
-            showNotification(`Selected ${this.querySelector('.mode-name').textContent} mode`, 'info');
+            const modeName = this.querySelector('.mode-name');
+            if (modeName) {
+                showNotification(`Selected ${modeName.textContent} mode`, 'info');
+            }
         });
     });
 }
