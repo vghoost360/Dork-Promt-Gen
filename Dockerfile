@@ -42,10 +42,10 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Set permissions
 RUN chown -R nginx:nginx /var/www/html \
     && chmod -R 755 /var/www/html \
-    && chmod -R 644 /var/www/html/*.php \
-    && chmod -R 755 /var/www/html/logs \
-    && chmod -R 755 /var/www/html/cache \
-    && chmod -R 755 /var/www/html/sessions
+    && chmod 644 /var/www/html/*.php \
+    && chmod -R 777 /var/www/html/logs \
+    && chmod -R 777 /var/www/html/cache \
+    && chmod -R 777 /var/www/html/sessions
 
 # Create health check script
 RUN echo '<?php echo "OK"; ?>' > /var/www/html/health.php
