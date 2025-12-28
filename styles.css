@@ -1033,7 +1033,7 @@ header h1 i {
 }
 
 .form-group label i {
-    color: var(--accent-color);
+    color: #667eea;
     font-size: 1.1em;
 }
 
@@ -1043,6 +1043,7 @@ input[type="number"],
 input[type="date"],
 select,
 textarea {
+    width: 100%;
     padding: var(--spacing-md);
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--border-radius-sm);
@@ -1051,6 +1052,7 @@ textarea {
     font-size: 1rem;
     transition: all var(--transition-normal);
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 input[type="text"]:focus,
@@ -1059,9 +1061,9 @@ input[type="date"]:focus,
 select:focus,
 textarea:focus {
     outline: none;
-    border-color: var(--accent-color);
+    border-color: #667eea;
     background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
 }
 
 input::placeholder {
@@ -1071,6 +1073,8 @@ input::placeholder {
 select {
     cursor: pointer;
     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right var(--spacing-md) center;
@@ -1078,16 +1082,107 @@ select {
 }
 
 select option {
-    background: var(--dark-color);
+    background: #1a1a2e;
     color: var(--white);
     padding: var(--spacing-sm);
+}
+
+select optgroup {
+    background: #1a1a2e;
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* Custom Checkbox Styling */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    flex-shrink: 0;
+}
+
+input[type="checkbox"]:hover {
+    border-color: rgba(102, 126, 234, 0.6);
+    background: rgba(102, 126, 234, 0.1);
+}
+
+input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+/* Custom Radio Button Styling */
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    flex-shrink: 0;
+}
+
+input[type="radio"]:hover {
+    border-color: rgba(102, 126, 234, 0.6);
+}
+
+input[type="radio"]:checked {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.2);
+}
+
+input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+}
+
+input[type="radio"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
 }
 
 /* Small text under inputs */
 .form-group small {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.85rem;
-    margin-top: -var(--spacing-xs);
+    margin-top: var(--spacing-xs);
+    display: block;
 }
 
 /* ===== BUTTONS ===== */
@@ -1174,6 +1269,31 @@ select option {
 
 .generate-btn:active {
     transform: translateY(0) scale(0.98);
+}
+
+/* General Button Styles */
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+button:not(.generate-btn):not(.template-btn):not(.preview-btn):not(.clear-all-btn):not(.copy-btn):not(.save-btn):not(.share-btn):not(.search-btn):not(.export-btn) {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius-sm);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    font-size: 0.95rem;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+button:not(.generate-btn):not(.template-btn):not(.preview-btn):not(.clear-all-btn):not(.copy-btn):not(.save-btn):not(.share-btn):not(.search-btn):not(.export-btn):hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(102, 126, 234, 0.5);
+    transform: translateY(-2px);
 }
 
 /* ===== RESULT SECTION ===== */
