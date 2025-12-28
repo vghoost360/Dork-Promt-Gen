@@ -114,6 +114,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <header>
             <h1><i class="fas fa-search"></i> Advanced Dork Search Generator</h1>
             <p class="subtitle">Professional Google Dorking Tool for Security Research</p>
+            
+            <!-- Mode Toggle Switch -->
+            <div class="mode-toggle-container">
+                <div class="mode-toggle">
+                    <span class="mode-label" id="mode-label-normal">Normal Search</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="adult-mode-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="mode-label adult-label" id="mode-label-adult">18+ Adult Search</span>
+                </div>
+                <p class="mode-description" id="mode-description">
+                    Currently in <strong>Normal Mode</strong> - Standard search engines and security research tools
+                </p>
+            </div>
         </header>
 
         <div class="warning-banner">
@@ -419,7 +434,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <div class="specialized-search">
+                    <!-- Specialized Search Engines (Normal Mode) -->
+                    <div class="specialized-search normal-mode-content">
                         <h4><i class="fas fa-satellite-dish"></i> Specialized Search Engines</h4>
                         <div class="search-buttons specialized">
                             <a href="https://shodan.io/search?query=<?= urlencode($generated_dork) ?>" 
@@ -449,7 +465,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <div class="adult-search">
+                    <!-- Adult Search Engines -->
+                    <div class="adult-search adult-mode-content" style="display: none;">
                         <h4><i class="fas fa-user-secret"></i> Adult Content Search (18+)</h4>
                         <div class="adult-warning">
                             <i class="fas fa-exclamation-triangle"></i>

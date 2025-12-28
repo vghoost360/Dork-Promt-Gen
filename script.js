@@ -25,6 +25,9 @@ function initializeApp() {
     
     // Analyze dork if present
     analyzeDork();
+    
+    // Initialize mode toggle
+    initializeModeToggle();
 }
 
 // Copy to clipboard functionality
@@ -1027,5 +1030,71 @@ function analyzeDork() {
     if (riskLevelEl) {
         riskLevelEl.textContent = riskLevel;
         riskLevelEl.className = 'value ' + riskClass;
+    }
+}
+
+// Mode toggle functionality
+function initializeModeToggle() {
+    const toggle = document.getElementById('adult-mode-toggle');
+    const normalLabel = document.getElementById('mode-label-normal');
+    const adultLabel = document.getElementById('mode-label-adult');
+    const modeDescription = document.getElementById('mode-description');
+    
+    if (!toggle) return;
+    
+    // Load saved preference from localStorage
+    const savedMode = localStorage.getItem('searchMode');
+    if (savedMode === 'adult') {
+        toggle.checked = true;
+        updateMode(true);
+    }
+    
+    // Handle toggle change
+    toggle.addEventListener('change', function() {
+        const isAdultMode = this.checked;
+        updateMode(isAdultMode);
+        
+        // Save preference
+        localStorage.setItem('searchMode', isAdultMode ? 'adult' : 'normal');
+        
+        // Show notification
+        showNotification(
+            isAdultMode ? 'Switched to 18+ Adult Search Mode' : 'Switched to Normal Search Mode',
+            isAdultMode ? 'warning' : 'info'
+        );
+    });
+    
+    function updateMode(isAdultMode) {
+        // Update label states
+        if (normalLabel && adultLabel) {
+            if (isAdultMode) {
+                normalLabel.classList.remove('active');
+                adultLabel.classList.add('active');
+            } else {
+                normalLabel.classList.add('active');
+                adultLabel.classList.remove('active');
+            }
+        }
+        
+        // Update description
+        if (modeDescription) {
+            if (isAdultMode) {
+                modeDescription.innerHTML = '<strong>⚠️ 18+ Adult Mode Active</strong> - Showing adult content search engines only';
+            } else {
+                modeDescription.innerHTML = 'Currently in <strong>Normal Mode</strong> - Standard search engines and security research tools';
+            }
+        }
+        
+        // Toggle visibility of content sections
+        const normalContent = document.querySelectorAll('.normal-mode-content');
+        const adultContent = document.querySelectorAll('.adult-mode-content');
+        
+        normalContent.forEach(el => {
+            el.style.display = isAdultMode ? 'none' : 'block';
+        });
+        
+        adultContent.forEach(el => {
+            el.style.display = isAdultMode ? 'block' : 'none';
+        });
     }
 }
