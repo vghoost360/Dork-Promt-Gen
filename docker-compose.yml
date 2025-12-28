@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  dork-generator:
+    build: .
+    container_name: dork-search-generator
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./logs:/var/www/html/logs
+      - ./cache:/var/www/html/cache
+      - ./sessions:/var/www/html/sessions
+      # Uncomment to mount SSL certificates
+      # - ./ssl:/etc/ssl/certs
+    environment:
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_MAX_EXECUTION_TIME=300
+      - NGINX_WORKER_CONNECTIONS=1024
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dork-generator.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.dork-generator.entrypoints=websecure"
+      - "traefik.http.routers.dork-generator.tls.certresolver=myresolver"
+    networks:
+      - dork-network
+
+  # Optional: Redis for session storage (uncomment if needed)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: dork-redis
+  #   restart: unless-stopped
+  #   command: redis-server --appendonly yes
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - dork-network
+
+  # Optional: Database (uncomment if you add database features)
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: dork-mysql
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: your-root-password
+  #     MYSQL_DATABASE: dork_generator
+  #     MYSQL_USER: dork_user
+  #     MYSQL_PASSWORD: your-password
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   networks:
+  #     - dork-network
+
+networks:
+  dork-network:
+    driver: bridge
+
+# volumes:
+#   redis_data:
+#   mysql_data:

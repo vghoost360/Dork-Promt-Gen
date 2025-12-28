@@ -1,0 +1,134 @@
+# Dork Search Generator - Git Ignore File
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# Log files
+logs/*.log
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+temp/
+
+# Cache files
+cache/
+*.cache
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Database files (if using SQLite)
+*.sqlite
+*.sqlite3
+*.db
+
+# Vendor directories (if using Composer)
+vendor/
+composer.lock
+
+# Node modules (if using npm/yarn)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+desktop.ini
+
+# Linux
+*~
+
+# PHP specific
+*.php~
+.phpintel/
+
+# User uploads (if implementing file uploads)
+uploads/
+user_files/
+
+# Generated files
+dist/
+build/
+
+# Development files
+tests/coverage/
+coverage/
+
+# Local configuration
+config.local.php
+settings.local.php
+
+# Session files
+sessions/
+
+# Error logs
+error.log
+access.log
+
+# Sensitive data
+secrets.php
+keys.php
+credentials.php
+
+# Development databases
+*.sql
+
+# Package files
+*.zip
+*.tar.gz
+*.rar
+
+# Analytics and tracking
+analytics/
+
+# Documentation build
+docs/_build/
+
+# Translations
+*.mo
+*.pot
+
+# Django (if mixed with Python)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask
+instance/
+.webassets-cache
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Virtual environments
+venv/
+env/
+ENV/

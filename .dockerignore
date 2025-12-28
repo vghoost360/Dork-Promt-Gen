@@ -1,0 +1,39 @@
+# Git files
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Development files
+.vscode
+.idea
+*.log
+.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Deployment scripts
+nginx-setup.sh
+deploy.sh
+deploy-windows.ps1
+
+# Node modules (if any)
+node_modules
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+
+# Build artifacts
+*.tar.gz
+*.zip
+
+# Local configuration
+.env.local
+.env.development
