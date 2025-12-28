@@ -24,6 +24,7 @@ RUN docker-php-ext-install \
 
 # Create directories (nginx user already exists in alpine)
 RUN mkdir -p /var/log/nginx \
+    && mkdir -p /var/log/supervisor \
     && mkdir -p /var/cache/nginx \
     && mkdir -p /var/www/html/logs \
     && mkdir -p /var/www/html/cache \
