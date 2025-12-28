@@ -22,9 +22,8 @@ RUN docker-php-ext-install \
     session \
     && docker-php-ext-enable opcache
 
-# Create nginx user and directories
-RUN adduser -D -S -h /var/cache/nginx nginx nginx \
-    && mkdir -p /var/log/nginx \
+# Create directories (nginx user already exists in alpine)
+RUN mkdir -p /var/log/nginx \
     && mkdir -p /var/cache/nginx \
     && mkdir -p /var/www/html/logs \
     && mkdir -p /var/www/html/cache \
