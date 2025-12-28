@@ -456,17 +456,25 @@ header h1 i {
 
 .clear-all-btn {
     background: rgba(220, 53, 69, 0.2);
-    border: 1px solid rgba(220, 53, 69, 0.4);
+    border: 2px solid rgba(220, 53, 69, 0.4);
     color: #ff6b6b;
-    padding: var(--spacing-xs) var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     transition: all var(--transition-normal);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
 }
 
 .clear-all-btn:hover {
     background: rgba(220, 53, 69, 0.4);
+    border-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
 .preview-content {
@@ -497,8 +505,8 @@ header h1 i {
 .preview-btn {
     flex: 1;
     padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(102, 126, 234, 0.2);
+    border: 2px solid rgba(102, 126, 234, 0.4);
     border-radius: var(--border-radius-sm);
     color: var(--white);
     cursor: pointer;
@@ -507,11 +515,20 @@ header h1 i {
     align-items: center;
     justify-content: center;
     gap: var(--spacing-xs);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .preview-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(102, 126, 234, 0.4);
+    border-color: #667eea;
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.preview-btn i {
+    font-size: 1rem;
 }
 
 /* ===== QUICK TEMPLATES ===== */
@@ -538,34 +555,46 @@ header h1 i {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: var(--spacing-xs);
-    padding: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-sm);
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--border-radius-md);
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
     transition: all var(--transition-normal);
+    font-family: inherit;
+    font-size: inherit;
+    min-height: 80px;
 }
 
 .template-btn i {
-    font-size: 1.5rem;
-    color: rgba(102, 126, 234, 0.8);
+    font-size: 1.8rem;
+    color: #667eea;
+    transition: all var(--transition-normal);
 }
 
 .template-btn span {
     font-size: 0.85rem;
     text-align: center;
+    font-weight: 500;
 }
 
 .template-btn:hover {
     background: rgba(102, 126, 234, 0.2);
-    border-color: rgba(102, 126, 234, 0.5);
+    border-color: #667eea;
     transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
 .template-btn:hover i {
-    color: #667eea;
+    color: #8b9cf4;
+    transform: scale(1.1);
+}
+
+.template-btn:active {
+    transform: translateY(-1px);
 }
 
 /* ===== BUILDER STEPS ===== */
@@ -1186,6 +1215,14 @@ input[type="radio"]:focus {
 }
 
 /* ===== BUTTONS ===== */
+/* Reset all buttons */
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
 .generate-btn {
     padding: var(--spacing-md) var(--spacing-xl);
     border: none;
@@ -1194,7 +1231,7 @@ input[type="radio"]:focus {
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-normal);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
@@ -1202,6 +1239,8 @@ input[type="radio"]:focus {
     letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
+    font-family: inherit;
+    color: var(--white);
 }
 
 .generate-btn::before {

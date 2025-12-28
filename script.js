@@ -457,34 +457,10 @@ function handleFormSubmit(event) {
 }
 
 function updatePreview() {
-    // This could show a real-time preview of the dork being built
-    const category = document.getElementById('category').value;
-    const customTerm = document.getElementById('custom_term').value;
-    const targetSite = document.getElementById('target_site').value;
-    const fileType = document.getElementById('file_type').value;
-    const operator = document.getElementById('operator').value;
-    
-    if (!category) return;
-    
-    // Build preview (simplified)
-    let preview = 'Preview: ';
-    if (operator && operator !== 'none') {
-        preview += operator + ':';
+    // Delegate to the live preview update function
+    if (typeof updateLivePreview === 'function') {
+        updateLivePreview();
     }
-    preview += '[category_dork]';
-    
-    if (customTerm) {
-        preview += ' "' + customTerm + '"';
-    }
-    if (targetSite) {
-        preview += ' site:' + targetSite;
-    }
-    if (fileType) {
-        preview += ' filetype:' + fileType;
-    }
-    
-    // Show preview (you could add a preview element to the HTML)
-    console.log(preview);
 }
 
 function showCategoryInfo(event) {
