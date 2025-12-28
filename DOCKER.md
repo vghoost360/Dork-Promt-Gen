@@ -120,8 +120,6 @@ docker-compose logs -f
 Make sure your `docker-compose.yml` is ready for Portainer. Use named volumes for better management:
 
 ```yaml
-version: '3.8'
-
 services:
   dork-generator:
     image: dork-search-generator:latest

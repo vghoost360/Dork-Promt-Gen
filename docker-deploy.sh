@@ -135,7 +135,6 @@ start_containers() {
         print_info "Updating configuration for domain: $DOMAIN, port: $PORT"
         # Create a temporary docker-compose override
         cat > docker-compose.override.yml << EOF
-version: '3.8'
 services:
   dork-generator:
     ports:

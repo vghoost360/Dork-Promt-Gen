@@ -23,8 +23,6 @@ Navigate to `http://your-server:9000`
 Copy and paste this into the editor:
 
 ```yaml
-version: '3.8'
-
 services:
   dork-generator:
     image: dork-search-generator:latest
