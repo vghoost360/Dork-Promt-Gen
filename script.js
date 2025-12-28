@@ -67,6 +67,53 @@ function fallbackCopyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 
+// Generate random dork
+function generateRandomDork() {
+    const form = document.querySelector('.dork-form');
+    if (!form) return;
+    
+    // Get all categories
+    const categorySelect = document.getElementById('category');
+    if (!categorySelect) return;
+    
+    // Select random category
+    const options = Array.from(categorySelect.options).filter(opt => opt.value !== '');
+    if (options.length === 0) return;
+    
+    const randomCategory = options[Math.floor(Math.random() * options.length)];
+    categorySelect.value = randomCategory.value;
+    
+    // Randomly populate some fields
+    const operators = ['inurl', 'intitle', 'filetype', 'intext', 'site'];
+    const fileTypes = ['pdf', 'doc', 'xls', 'sql', 'txt', 'xml', 'log', 'conf', 'bak'];
+    const advancedOptions = document.querySelectorAll('.advanced-options input[type="checkbox"]');
+    
+    // Random operator
+    const operatorSelect = document.getElementById('operator');
+    if (operatorSelect && Math.random() > 0.3) {
+        const operatorOptions = Array.from(operatorSelect.options).filter(opt => opt.value !== '');
+        if (operatorOptions.length > 0) {
+            operatorSelect.value = operatorOptions[Math.floor(Math.random() * operatorOptions.length)].value;
+        }
+    }
+    
+    // Random file type
+    const fileTypeInput = document.getElementById('file_type');
+    if (fileTypeInput && Math.random() > 0.5) {
+        fileTypeInput.value = fileTypes[Math.floor(Math.random() * fileTypes.length)];
+    }
+    
+    // Randomly enable/disable advanced options
+    advancedOptions.forEach(checkbox => {
+        checkbox.checked = Math.random() > 0.7;
+    });
+    
+    showNotification('Random dork configuration generated!', 'success');
+    
+    // Submit the form
+    form.submit();
+}
+
 // Notification system
 function showNotification(message, type = 'info') {
     // Remove existing notifications
@@ -312,9 +359,6 @@ function initializeKeyboardShortcuts() {
 
 // Advanced features
 function initializeAdvancedFeatures() {
-    // Add random dork generator
-    addRandomDorkButton();
-    
     // Add dork history
     initializeDorkHistory();
     
