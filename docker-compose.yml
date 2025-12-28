@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dork-search-generator:latest
     container_name: dork-search-generator
     restart: unless-stopped
     ports:
@@ -25,11 +24,11 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dork-generator.rule=Host(`your-domain.com`)"
-      - "traefik.http.routers.dork-generator.entrypoints=websecure"
-      - "traefik.http.routers.dork-generator.tls.certresolver=myresolver"
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.dork-generator.rule=Host(`your-domain.com`)"
+#      - "traefik.http.routers.dork-generator.entrypoints=websecure"
+#      - "traefik.http.routers.dork-generator.tls.certresolver=myresolver"
     networks:
       - dork-network
 
