@@ -1,4 +1,15 @@
 <?php
+// Security headers
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+
+// Error handling for production
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
 // Include configuration
 require_once 'config.php';
 
@@ -23,18 +34,22 @@ $threat_level = 'informational'; // Default threat level
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Sanitize inputs
-    $selected_category = isset($_POST['category']) ? htmlspecialchars($_POST['category']) : '';
-    $custom_dork = isset($_POST['custom_term']) ? htmlspecialchars($_POST['custom_term']) : '';
-    $search_engine = isset($_POST['search_engine']) ? htmlspecialchars($_POST['search_engine']) : 'https://www.google.com/search?q=';
+    // Get and sanitize inputs - preserve quotes for dork syntax
+    $selected_category = isset($_POST['category']) ? trim($_POST['category']) : '';
+    $custom_dork = isset($_POST['custom_term']) ? trim($_POST['custom_term']) : '';
+    $search_engine = isset($_POST['search_engine']) ? trim($_POST['search_engine']) : 'https://www.google.com/search?q=';
     $exact_phrase = isset($_POST['exact_phrase']) ? true : false;
     
-    // New builder fields
-    $search_in = isset($_POST['search_in']) ? array_map('htmlspecialchars', $_POST['search_in']) : [];
-    $target_site = isset($_POST['target_site']) ? htmlspecialchars(trim($_POST['target_site'])) : '';
-    $exclude_site = isset($_POST['exclude_site']) ? htmlspecialchars(trim($_POST['exclude_site'])) : '';
-    $filetypes = isset($_POST['filetypes']) ? array_map('htmlspecialchars', $_POST['filetypes']) : [];
-    $custom_filetype = isset($_POST['custom_filetype']) ? htmlspecialchars(trim($_POST['custom_filetype'])) : '';
+    // Builder fields - sanitize but preserve dork syntax characters
+    $search_in = isset($_POST['search_in']) ? array_filter($_POST['search_in'], function($v) {
+        return preg_match('/^[a-z]+$/i', $v); // Only allow alphabetic operators
+    }) : [];
+    $target_site = isset($_POST['target_site']) ? preg_replace('/[^a-zA-Z0-9.\-_]/', '', trim($_POST['target_site'])) : '';
+    $exclude_site = isset($_POST['exclude_site']) ? preg_replace('/[^a-zA-Z0-9.\-_]/', '', trim($_POST['exclude_site'])) : '';
+    $filetypes = isset($_POST['filetypes']) ? array_filter($_POST['filetypes'], function($v) {
+        return preg_match('/^[a-z0-9]+$/i', $v); // Only allow alphanumeric filetypes
+    }) : [];
+    $custom_filetype = isset($_POST['custom_filetype']) ? preg_replace('/[^a-zA-Z0-9]/', '', trim($_POST['custom_filetype'])) : '';
 
     // Basic validation
     if (empty($selected_category) && empty($custom_dork) && empty($target_site)) {
