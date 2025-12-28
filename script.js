@@ -72,49 +72,229 @@ function fallbackCopyTextToClipboard(text) {
 
 // Generate random dork
 function generateRandomDork() {
-    const form = document.querySelector('.dork-form');
+    const form = document.getElementById('dork-builder-form');
     if (!form) return;
     
     // Get all categories
     const categorySelect = document.getElementById('category');
-    if (!categorySelect) return;
-    
-    // Select random category
-    const options = Array.from(categorySelect.options).filter(opt => opt.value !== '');
-    if (options.length === 0) return;
-    
-    const randomCategory = options[Math.floor(Math.random() * options.length)];
-    categorySelect.value = randomCategory.value;
-    
-    // Randomly populate some fields
-    const operators = ['inurl', 'intitle', 'filetype', 'intext', 'site'];
-    const fileTypes = ['pdf', 'doc', 'xls', 'sql', 'txt', 'xml', 'log', 'conf', 'bak'];
-    const advancedOptions = document.querySelectorAll('.advanced-options input[type="checkbox"]');
-    
-    // Random operator
-    const operatorSelect = document.getElementById('operator');
-    if (operatorSelect && Math.random() > 0.3) {
-        const operatorOptions = Array.from(operatorSelect.options).filter(opt => opt.value !== '');
-        if (operatorOptions.length > 0) {
-            operatorSelect.value = operatorOptions[Math.floor(Math.random() * operatorOptions.length)].value;
+    if (categorySelect) {
+        // Select random category
+        const options = Array.from(categorySelect.options).filter(opt => opt.value !== '');
+        if (options.length > 0) {
+            const randomCategory = options[Math.floor(Math.random() * options.length)];
+            categorySelect.value = randomCategory.value;
         }
     }
     
-    // Random file type
-    const fileTypeInput = document.getElementById('file_type');
-    if (fileTypeInput && Math.random() > 0.5) {
-        fileTypeInput.value = fileTypes[Math.floor(Math.random() * fileTypes.length)];
+    // Random search terms
+    const searchTerms = ['admin', 'login', 'password', 'config', 'backup', 'database', 'credentials', 'secret'];
+    const customTerm = document.getElementById('custom_term');
+    if (customTerm) {
+        customTerm.value = searchTerms[Math.floor(Math.random() * searchTerms.length)];
     }
     
-    // Randomly enable/disable advanced options
-    advancedOptions.forEach(checkbox => {
-        checkbox.checked = Math.random() > 0.7;
+    // Random operator selection
+    const operatorCards = document.querySelectorAll('.operator-card input');
+    operatorCards.forEach(input => {
+        input.checked = Math.random() > 0.6;
     });
     
-    showNotification('Random dork configuration generated!', 'success');
+    // Random file type
+    const fileTypes = document.querySelectorAll('.filetype-chip input');
+    fileTypes.forEach(input => {
+        input.checked = false;
+    });
+    if (fileTypes.length > 0 && Math.random() > 0.5) {
+        const randomIndex = Math.floor(Math.random() * fileTypes.length);
+        fileTypes[randomIndex].checked = true;
+    }
     
-    // Submit the form
-    form.submit();
+    showNotification('Random configuration generated!', 'success');
+    updateLivePreview();
+    
+    // Optionally submit the form
+    setTimeout(() => form.submit(), 500);
+}
+
+// Live preview update
+function updateLivePreview() {
+    const previewElement = document.getElementById('live-preview-dork');
+    if (!previewElement) return;
+    
+    let dorkParts = [];
+    
+    // Get custom term
+    const customTerm = document.getElementById('custom_term');
+    const exactPhrase = document.querySelector('input[name="exact_phrase"]');
+    let term = customTerm?.value?.trim() || '';
+    
+    if (term && exactPhrase?.checked) {
+        term = `"${term}"`;
+    }
+    
+    // Get search locations (operators)
+    const searchLocations = document.querySelectorAll('input[name="search_in[]"]:checked');
+    if (searchLocations.length > 0 && term) {
+        searchLocations.forEach(loc => {
+            if (loc.value === 'allintext') {
+                dorkParts.push(term);
+            } else {
+                dorkParts.push(`${loc.value}:${term}`);
+            }
+        });
+    } else if (term) {
+        dorkParts.push(term);
+    }
+    
+    // Get target site
+    const targetSite = document.getElementById('target_site')?.value?.trim();
+    if (targetSite) {
+        dorkParts.push(`site:${targetSite}`);
+    }
+    
+    // Get exclude site
+    const excludeSite = document.getElementById('exclude_site')?.value?.trim();
+    if (excludeSite) {
+        dorkParts.push(`-site:${excludeSite}`);
+    }
+    
+    // Get file types
+    const fileTypes = document.querySelectorAll('input[name="filetypes[]"]:checked');
+    fileTypes.forEach(ft => {
+        dorkParts.push(`filetype:${ft.value}`);
+    });
+    
+    // Get custom file type
+    const customFiletype = document.getElementById('custom_filetype')?.value?.trim();
+    if (customFiletype) {
+        dorkParts.push(`filetype:${customFiletype}`);
+    }
+    
+    // Update preview
+    if (dorkParts.length > 0) {
+        previewElement.textContent = dorkParts.join(' ');
+        previewElement.classList.remove('empty');
+    } else {
+        previewElement.textContent = 'Start building your dork above...';
+        previewElement.classList.add('empty');
+    }
+}
+
+// Copy preview dork
+function copyPreviewDork() {
+    const previewElement = document.getElementById('live-preview-dork');
+    if (!previewElement || previewElement.classList.contains('empty')) {
+        showNotification('Nothing to copy yet!', 'warning');
+        return;
+    }
+    
+    const text = previewElement.textContent;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification('Dork copied to clipboard!', 'success');
+        });
+    }
+}
+
+// Test preview dork in Google
+function testPreviewDork() {
+    const previewElement = document.getElementById('live-preview-dork');
+    if (!previewElement || previewElement.classList.contains('empty')) {
+        showNotification('Build a dork first!', 'warning');
+        return;
+    }
+    
+    const dork = previewElement.textContent;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(dork)}`;
+    window.open(url, '_blank');
+}
+
+// Clear all fields
+function clearAllFields() {
+    const form = document.getElementById('dork-builder-form');
+    if (form) {
+        form.reset();
+    }
+    
+    // Uncheck all checkboxes
+    document.querySelectorAll('.operator-card input, .filetype-chip input, .modifier-chip input').forEach(input => {
+        input.checked = false;
+    });
+    
+    updateLivePreview();
+    showNotification('All fields cleared', 'info');
+}
+
+// Apply template
+function applyTemplate(templateType) {
+    clearAllFields();
+    
+    const templates = {
+        admin: {
+            term: 'admin OR administrator OR login',
+            operators: ['inurl'],
+            filetypes: []
+        },
+        login: {
+            term: 'login OR signin OR "sign in"',
+            operators: ['intitle'],
+            filetypes: []
+        },
+        sensitive: {
+            term: 'password OR secret OR credentials',
+            operators: ['intext'],
+            filetypes: ['txt', 'log']
+        },
+        database: {
+            term: 'database OR dump OR backup',
+            operators: [],
+            filetypes: ['sql']
+        },
+        config: {
+            term: 'config OR configuration OR settings',
+            operators: ['inurl'],
+            filetypes: ['conf', 'env']
+        },
+        backup: {
+            term: 'backup OR bak OR old',
+            operators: [],
+            filetypes: ['bak', 'sql']
+        },
+        exposed: {
+            term: '"index of" OR "directory listing"',
+            operators: ['intitle'],
+            filetypes: []
+        },
+        cameras: {
+            term: '"camera" OR "webcam" OR "live view"',
+            operators: ['intitle', 'inurl'],
+            filetypes: []
+        }
+    };
+    
+    const template = templates[templateType];
+    if (!template) return;
+    
+    // Set custom term
+    const customTerm = document.getElementById('custom_term');
+    if (customTerm) {
+        customTerm.value = template.term;
+    }
+    
+    // Set operators
+    template.operators.forEach(op => {
+        const checkbox = document.querySelector(`input[name="search_in[]"][value="${op}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+    
+    // Set file types
+    template.filetypes.forEach(ft => {
+        const checkbox = document.querySelector(`input[name="filetypes[]"][value="${ft}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+    
+    updateLivePreview();
+    showNotification(`Applied "${templateType}" template`, 'success');
 }
 
 // Notification system
